@@ -1,5 +1,6 @@
 import logging
 import sys
+import time
 from enum import Enum
 
 import keyboard
@@ -20,17 +21,22 @@ class Runner:
 
     def run(self):
         while 1:
-            bytes_to_read = self.ser.in_waiting
-            data = self.ser.read(bytes_to_read)
-            try:
-                decoded_data = data.decode("ISO-8859-1")
-                Mappings.parse_and_execute(decoded_data)
-            except UnicodeEncodeError as e:
-                logging.error("Unable to decode: {}".format(e))
-            except KeyboardInterrupt:
-                logging.info("Closing connection")
-                self.ser.close()
-                sys.exit(0)
+            self.read()
+
+    def read(self):
+        bytes_to_read = self.ser.in_waiting
+        data = self.ser.read(bytes_to_read)
+        try:
+            decoded_data = data.decode("ISO-8859-1")
+            logging.debug("Received {}\n".format(decoded_data))
+            Mappings.parse_and_execute(decoded_data)
+            time.sleep(1)
+        except UnicodeEncodeError as e:
+            logging.error("Unable to decode: {}".format(e))
+        except KeyboardInterrupt:
+            logging.info("Closing connection")
+            self.ser.close()
+            sys.exit(0)
 
 
 class KeyControls(Enum):
@@ -53,8 +59,8 @@ class KeyControls(Enum):
     WHEEL_RIGHT = "2"
 
     def press(self):
-        print(self)
-        keyboard.write(self)
+        logging.debug("Sending key control {}".format(self.name))
+        keyboard.write(self.value)
 
 
 class Mappings(Enum):
@@ -69,12 +75,18 @@ class Mappings(Enum):
     def parse_and_execute(data: str):
         i = 0
         while i < len(data):
+            handled = False
             for mapping in Mappings:
-                if data[i:].startswith(mapping[0]):
-                    i += len(mapping[0])
-                    mapping[1].press()
+                delimiter, control = mapping.value
+                if data[i:].startswith(delimiter):
+                    i += len(delimiter)
+                    handled = True
+                    control.press()
+            if not handled:
+                i += 1
 
 
 if __name__ == "__main__":
+    logging.basicConfig(stream=sys.stdout, level=logging.INFO)
     runner = Runner("/dev/ttyAMA0")
     runner.run()
