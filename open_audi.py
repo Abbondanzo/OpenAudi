@@ -59,7 +59,7 @@ class KeyControls(Enum):
     WHEEL_RIGHT = "2"
 
     def press(self):
-        logging.debug("Sending key control {}".format(self.name))
+        logging.debug("Sending key control {}-{}".format(self.value, self.name))
         keyboard.write(self.value)
 
 
