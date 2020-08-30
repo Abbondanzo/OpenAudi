@@ -1,0 +1,44 @@
+Volume down: Ag
+Volume up: @f
+Main dial right: Pv
+Main dial left: Qw
+Main dial press down: 0V
+Main dial press up: 1W
+Power toggle down: 08*  <-- the * is a not rendering
+Power toggle up: 18*  <-- the * is a not rendering
+
+Corners
+Top right down: b0
+Top right up: c1
+Top left down: 0\n_
+Top left up: 1\n`
+Bottom left down: 0\n`
+Bottom left up: 1\na
+Bottom right down: *c   <-- the * is a not rendering
+Bottom right up: 1d
+
+Outside buttons
+FM/AM down: 0m
+FM/AM up: 1n
+CD down: 0W
+CD up: 1X
+NAME down: 0X
+NAME up: 1Y
+TEL down: 0Y
+TEL up: 1Z
+NAV down: 0Z
+NAV up: 1[
+INFO down: 0[
+INFO up: 1\
+CAR down: 0\
+CAR up: 1]
+SETUP down: ]
+SETUP up: ^
+
+Bottom buttons
+RETURN down: 0d
+RETURN up: 1e
+RETURN left down: 0\na
+RETURN left up: 1\nb
+RETURN right down: 0u
+RETURN right up: 1v
